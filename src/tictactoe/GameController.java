@@ -1,6 +1,5 @@
 package tictactoe;
 
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -54,7 +53,6 @@ public class GameController {
 		if (winner != Player.NONE) topLabel.setText("Player "+winner+" wins!");
 		else if (game.isGameOver()) topLabel.setText("Draw. No winner.");
 		else topLabel.setText("Next Player: " + game.getNextPlayer());
-		
 	}
 
 	
