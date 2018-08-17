@@ -1,6 +1,5 @@
 package tictactoe;
 
-
 import javafx.scene.shape.Rectangle;
 
 /**
