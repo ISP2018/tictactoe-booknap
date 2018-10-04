@@ -53,18 +53,23 @@
 	<!-- create the build directory for output -->
 	<target name="init" description="Create output directories if they don't exist" >
 	   <mkdir dir="bin" />
-	   <mkdir dir="bin/test" />
+	   <mkdir dir="${test.build.dir}" />
 	</target>
 
 	<!-- compile the source code -->
 	<target name="compile" depends="init" description="Compile source code" >
-		<javac srcdir="src" destdir="bin" includeantruntime="false" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" />
+		<copy todir="build.xml">
+			<fileset dir="${src.dir}">
+				<include name="**/*.fxml"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<!-- compile the test code -->
 	<target name="test-compile" depends="init,compile"
 		    description="Compile unit test source code" >
-		<javac srcdir="test" destdir="bin/test" includeantruntime="false" >
+		<javac srcdir="test" destdir="${build.dir}" includeantruntime="false" >
 			<classpath refid="test.classpath" />
 		</javac>
 	</target>
@@ -74,13 +79,21 @@
 		<junit fork="true" printsummary="on" haltonfailure="false">
 			<classpath>
 				<path refid="test.classpath" />
-				<pathelement location="bin/test" />
+				<pathelement location="${test.build.dir}" />
 			</classpath>
 			<!-- What classes contain JUnit tests? -->
 			<batchtest>
-				<fileset dir="bin/test" includes="**/*Test.class" />
+				<fileset dir="${test.dir.build}" includes="**/*Test.class" />
 			</batchtest>
 		</junit>
 	</target>
+	
+    <target name="jar" depends="compile" description="Create runnable JAR file of project">
+        <jar destfile="dist/tictactoe.jar" basedir="${build.dir}">
+        	<manifest>
+        		<attribute name="Main-Class" value="tictactoe.Main"/>
+        	</manifest>
+        </jar>
+    </target>
 	
 </project>
